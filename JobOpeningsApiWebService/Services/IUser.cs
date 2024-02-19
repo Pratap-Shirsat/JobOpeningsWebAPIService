@@ -10,5 +10,8 @@ namespace JobOpeningsApiWebService.Services
 		Task<ResponseDto> AddUser(User user);
 		Task<ResponseDto> UpdateUser(User user);
 		Task<IEnumerable<User>> GetAllUsers();
+		Task<User?> findUserByEmail(string email);
+		Task<User?> findUserByPhone(string phone);
+
 	}
 }

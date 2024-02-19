@@ -11,7 +11,7 @@ namespace JobOpeningsApiWebService.Models
         public string title { get; set; }
 
 		[JsonIgnore]
-		public DateTime CreatedDate { get; set; } = DateTime.Now;
+		public DateTime CreatedDate { get; set; } = DateTime.Now.ToUniversalTime();
 
 		[JsonIgnore]
 		public bool IsDeleted { get; set; } = false;

@@ -23,13 +23,13 @@ namespace JobOpeningsApiWebService.Models
 		[Required]
 		public int departmentId { get; set; }
 
-		public DateTime postedDate { get; set; } = DateTime.Now;
+		public DateTime postedDate { get; set; } = DateTime.Now.ToUniversalTime();
 
 		[Required]
 		public DateTime closingDate { get; set; }
 
 		[JsonIgnore]
-		public DateTime CreatedDate { get; set; } = DateTime.Now;
+		public DateTime CreatedDate { get; set; } = DateTime.Now.ToUniversalTime();
 		[JsonIgnore]
 		public bool IsDeleted { get; set; } = false;
 	}

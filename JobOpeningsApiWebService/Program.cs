@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DBConnection");
 
-builder.Services.AddDbContext<JobOpeningsDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<JobOpeningsDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<ILocation, LocationRepository>();
 builder.Services.AddScoped<IDepartment, DepartmentRepository>();
 builder.Services.AddScoped<IJobs, JobRepository>();

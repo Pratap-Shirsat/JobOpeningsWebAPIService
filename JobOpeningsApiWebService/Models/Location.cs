@@ -23,7 +23,7 @@ namespace JobOpeningsApiWebService.Models
 		public int zip { get; set; }
 
 		[JsonIgnore]
-		public DateTime CreatedDate { get; set; } = DateTime.Now;
+		public DateTime CreatedDate { get; set; } = DateTime.Now.ToUniversalTime();
 
 		[JsonIgnore]
 		public bool IsDeleted { get; set; } = false;

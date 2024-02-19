@@ -3,6 +3,7 @@ using System;
 using JobOpeningsApiWebService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JobOpeningsApiWebService.Migrations
 {
     [DbContext(typeof(JobOpeningsDbContext))]
-    partial class JobOpeningsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240215142134_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,14 +171,6 @@ namespace JobOpeningsApiWebService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ResetCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ResetPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("UserType")
                         .HasColumnType("integer");
 
@@ -192,28 +187,24 @@ namespace JobOpeningsApiWebService.Migrations
                         new
                         {
                             Id = new Guid("cd87c8dd-df68-46cc-a9d5-08dc1852bb58"),
-                            CreatedOn = new DateTime(2024, 2, 16, 11, 41, 34, 642, DateTimeKind.Utc).AddTicks(5062),
+                            CreatedOn = new DateTime(2024, 2, 15, 14, 21, 33, 562, DateTimeKind.Utc).AddTicks(345),
                             Email = "pratap@admin.com",
                             IsDeleted = false,
                             Name = "Pratap Shirsat",
                             Password = "$2a$10$VxE26TrbGlxAiapR4dBTq.KCZ0L1r1M032MbWVZ2gdHU9RwQpqMwu",
                             Phone = "9999999999",
-                            ResetCode = "",
-                            ResetPassword = "",
                             UserType = 1,
                             Username = "Admin"
                         },
                         new
                         {
                             Id = new Guid("22dfa6bc-9368-4271-6a90-08dc18541600"),
-                            CreatedOn = new DateTime(2024, 2, 16, 11, 41, 34, 642, DateTimeKind.Utc).AddTicks(5116),
+                            CreatedOn = new DateTime(2024, 2, 15, 14, 21, 33, 562, DateTimeKind.Utc).AddTicks(396),
                             Email = "jimin@admin.com",
                             IsDeleted = false,
                             Name = "Jimin Park",
                             Password = "$2a$10$c2gltoVOEhSIeYtE4ZkctOKSa57ye2i69p1akHwk87Kh8DUHRapM.",
                             Phone = "9999999999",
-                            ResetCode = "",
-                            ResetPassword = "",
                             UserType = 1,
                             Username = "jimin"
                         });

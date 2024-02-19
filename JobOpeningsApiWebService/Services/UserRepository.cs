@@ -1,7 +1,6 @@
 ﻿using JobOpeningsApiWebService.Data;
 using JobOpeningsApiWebService.Dto;
 using JobOpeningsApiWebService.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace JobOpeningsApiWebService.Services
@@ -17,29 +16,50 @@ namespace JobOpeningsApiWebService.Services
 		public async Task<ResponseDto> AddUser(User user)
 		{
 			ResponseDto responseDto = new ResponseDto();
-			try
+
+			if (findUserByUserame(user.Username) != null)
 			{
-				var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
-				var hashedPass = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
-				user.Password = hashedPass;
-				var result = await _context.Users.AddAsync(user);
-				await _context.SaveChangesAsync();
-				responseDto.Message = "Registered User successfully";
-				return responseDto;
-			}
-			catch (DbUpdateException ex)
-			{
-				var sqlException = ex.InnerException as SqlException;
 				responseDto.IsSuccess = false;
-				responseDto.Message = sqlException?.Number == 2601 || sqlException?.Number == 2627 ? "Email/Username is already registered!" : ex.Message.ToString();
+				responseDto.Message = $"User with username {user.Username} already exists!";
 				return responseDto;
 			}
+			if (findUserByEmail(user.Email) != null)
+			{
+				responseDto.IsSuccess = false;
+				responseDto.Message = $"User with email {user.Email} already exists!";
+				return responseDto;
+			}
+			if (findUserByPhone(user.Phone) != null)
+			{
+				responseDto.IsSuccess = false;
+				responseDto.Message = $"User with phone {user.Phone} already exists!";
+				return responseDto;
+			}
+			var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
+			var hashedPass = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
+			user.Password = hashedPass;
+			var result = await _context.Users.AddAsync(user);
+			await _context.SaveChangesAsync();
+			responseDto.Message = "Registered User successfully";
+			return responseDto;
+		}
+
+		public async Task<User?> findUserByEmail(string email)
+		{
+			var user = await (from users in _context.Users where users.Email == email && users.IsDeleted == false select users).SingleOrDefaultAsync();
+			return user;
 		}
 
 		public async Task<User?> findUserById(string id)
 		{
 			var usr = await (from user in _context.Users where user.Id == Guid.Parse(id) && user.IsDeleted == false select user).SingleOrDefaultAsync();
 			return usr;
+		}
+
+		public async Task<User?> findUserByPhone(string phone)
+		{
+			var user = await (from users in _context.Users where users.Phone == phone && users.IsDeleted == false select users).SingleOrDefaultAsync();
+			return user;
 		}
 
 		public async Task<User?> findUserByUserame(string name)
