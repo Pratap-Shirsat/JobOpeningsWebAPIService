@@ -11,7 +11,7 @@ namespace JobOpeningsApiWebService.Controllers
 	[ApiController]
 	public class JobsController : ControllerBase
 	{
-		private IJobs _jobRepo;
+		private readonly IJobs _jobRepo;
 
 		public JobsController(IJobs jobRepo)
 		{
@@ -21,7 +21,7 @@ namespace JobOpeningsApiWebService.Controllers
 		// GET: api/<JobsController>
 		[HttpGet("[action]")]
 		[Authorize]
-		public async Task<IActionResult> list([FromQuery] jobListReqDto jobReq)
+		public async Task<IActionResult> List([FromQuery] jobListReqDto jobReq)
 		{
 			var jobs = await _jobRepo.GetJobs(jobReq.q, jobReq?.locationId, jobReq?.departmentId);
 			var filteredJobs = jobs.Skip((jobReq.pageNo - 1) * jobReq.pageSize).Take(jobReq.pageSize);
@@ -50,13 +50,15 @@ namespace JobOpeningsApiWebService.Controllers
 			{
 				return BadRequest(ModelState);
 			}
-			Job jb = new();
-			jb.title = job.title;
-			jb.description = job.description;
-			jb.locationId = job.locationId;
-			jb.departmentId = job.departmentId;
-			jb.closingDate = job.closingDate;
-			jb.code = generateJobCode();
+			Job jb = new()
+			{
+				title = job.title,
+				description = job.description,
+				locationId = job.locationId,
+				departmentId = job.departmentId,
+				closingDate = job.closingDate,
+				code = GenerateJobCode()
+			};
 			var res = await _jobRepo.AddJob(jb);
 			if (res.IsSuccess)
 			{
@@ -99,9 +101,9 @@ namespace JobOpeningsApiWebService.Controllers
 			return Ok(res.Message);
 		}
 
-		private string generateJobCode()
+		private static string GenerateJobCode()
 		{
-			Random random = new Random();
+			Random random = new();
 			string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 			char[] code = new char[6];
 

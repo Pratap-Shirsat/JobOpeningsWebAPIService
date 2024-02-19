@@ -9,7 +9,7 @@ namespace JobOpeningsApiWebService.Controllers
 	public class AuthenticationController : Controller
 	{
 		private readonly IConfiguration _configuration;
-		private IUser _user;
+		private readonly IUser _user;
 
 		public AuthenticationController(IConfiguration configuration, IUser userRepo)
 		{

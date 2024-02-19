@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(c =>
 						Id = "Bearer"
 					}
 				},
-				new string[] {}
+				Array.Empty<string>()
 			}
 		});
 });
@@ -86,13 +86,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		};
 	});
 
-builder.Services.AddAuthorization(options =>
-{
-	options.AddPolicy("AdminPolicy", policy =>
+builder.Services.AddAuthorizationBuilder()
+	.AddPolicy("AdminPolicy", policy =>
 	{
 		policy.RequireRole("Admin");
 	});
-});
 
 var app = builder.Build();
 

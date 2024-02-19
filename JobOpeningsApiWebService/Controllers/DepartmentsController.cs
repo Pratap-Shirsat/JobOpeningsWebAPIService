@@ -11,7 +11,7 @@ namespace JobOpeningsApiWebService.Controllers
 	[Route("api/v{version:apiVersion}/departments")]
 	public class DepartmentsController : ControllerBase
 	{
-		private IDepartment _departmentRepo;
+		private readonly IDepartment _departmentRepo;
 		public DepartmentsController(IDepartment departmentRepo)
 		{
 			_departmentRepo = departmentRepo;
@@ -48,8 +48,10 @@ namespace JobOpeningsApiWebService.Controllers
 			{
 				return BadRequest(ModelState);
 			}
-			Department dept = new();
-			dept.title = department.title;
+			Department dept = new()
+			{
+				title = department.title
+			};
 			ResponseDto res = await _departmentRepo.AddDepartment(dept);
 			if (res.IsSuccess)
 			{

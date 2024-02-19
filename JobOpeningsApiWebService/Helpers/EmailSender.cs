@@ -13,14 +13,17 @@ namespace JobOpeningsApiWebService.Helpers
 		}
 		public void SendEmail(string recipientEmail, string subject, string body)
 		{
-			SmtpClient smtpClient = new SmtpClient(_config.GetSection("EmailSettings")["emailAccountClient"]?.ToString());
-			smtpClient.Port = 587;
-			smtpClient.EnableSsl = true;
+			SmtpClient smtpClient = new(_config.GetSection("EmailSettings")["emailAccountClient"]?.ToString())
+			{
+				Port = 587,
+				EnableSsl = true,
+				Credentials = new NetworkCredential(_config.GetSection("EmailSettings")["emailAccountID"]?.ToString(), _config.GetSection("EmailSettings")["emailAccountPassword"]?.ToString())
+			};
 
-			smtpClient.Credentials = new NetworkCredential(_config.GetSection("EmailSettings")["emailAccountID"]?.ToString(), _config.GetSection("EmailSettings")["emailAccountPassword"]?.ToString());
-
-			MailMessage mailMessage = new MailMessage();
-			mailMessage.From = new MailAddress(_config.GetSection("EmailSettings")["emailAccountID"]?.ToString());
+			MailMessage mailMessage = new()
+			{
+				From = new MailAddress(_config.GetSection("EmailSettings")["emailAccountID"]?.ToString())
+			};
 			mailMessage.To.Add(recipientEmail);
 			mailMessage.Subject = subject;
 			mailMessage.Body = body;
