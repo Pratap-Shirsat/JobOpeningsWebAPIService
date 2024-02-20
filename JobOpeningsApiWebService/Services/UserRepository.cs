@@ -17,19 +17,19 @@ namespace JobOpeningsApiWebService.Services
 		{
 			ResponseDto responseDto = new ResponseDto();
 
-			if (findUserByUserame(user.Username) != null)
+			if (await findUserByUserame(user.Username) != null)
 			{
 				responseDto.IsSuccess = false;
 				responseDto.Message = $"User with username {user.Username} already exists!";
 				return responseDto;
 			}
-			if (findUserByEmail(user.Email) != null)
+			if (await findUserByEmail(user.Email) != null)
 			{
 				responseDto.IsSuccess = false;
 				responseDto.Message = $"User with email {user.Email} already exists!";
 				return responseDto;
 			}
-			if (findUserByPhone(user.Phone) != null)
+			if (await findUserByPhone(user.Phone) != null)
 			{
 				responseDto.IsSuccess = false;
 				responseDto.Message = $"User with phone {user.Phone} already exists!";
